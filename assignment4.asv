@@ -1,0 +1,23 @@
+clear all;
+s = 10;
+mydft_times = zeros(s,1);
+myfft_times = zeros(s,1);
+
+for i=1:s
+X = single(rand(2^i,1)) + j * single(rand(2^i,1));
+    t = cputime;
+    mydft(X);
+    mydft_times(i) = cputime - t;
+    t = cputime;
+    myfft(X);
+    myfft_times(i) = cputime - t;
+fprintf( 1, 'size=%d\tmydft: %f\tfft: %f\n', 2^i, mydft_times(i), myfft_times(i) );
+end
+plotX = 
+plot(2.^[1:s], mydft_times, 'bx-' );
+hold;
+plot(2.^[1:s], myfft_times, 'ro--' );
+plot(2.^[1:s],[1:s] * log([1:s]) * max(myfft_times),'g*:') 
+legend('mydft','myfft','MlogM');
+xlabel('M');
+ylabel('cputime');
